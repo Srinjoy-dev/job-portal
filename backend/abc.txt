@@ -1,0 +1,5 @@
+Express → helps you create your backend/server.
+cookieParser → lets your backend read cookies sent by the browser.
+cors → allows your frontend and backend (running on different ports) to communicate.
+Middleware = something that runs in between the request coming in and your actual route handling it.
+//basically we need 4 schemas in job portal site- user,company,job listings,job applications
