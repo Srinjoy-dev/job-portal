@@ -3,3 +3,18 @@ cookieParser → lets your backend read cookies sent by the browser.
 cors → allows your frontend and backend (running on different ports) to communicate.
 Middleware = something that runs in between the request coming in and your actual route handling it.
 //basically we need 4 schemas in job portal site- user,company,job listings,job applications
+--bcrypt is used to securely hash passwords. suppose a password is hello123. we dont want to store that
+  so it changes into something like $2b$10$k8.... which gets stored. the value 10 denotes salt rounds/
+  cost factor. it controls how computationally expensive the hashing is.
+  during login bcrypt can check whether the password matches using bcrypt.compare(password,hashedpassword)
+--req-req cotains the info coming from frontend, res-backend uses this to send something back to frontend
+  here in user.controller.js- req.body contains the whole body then const{} takes out only whats needed.
+--Middlewares works between request and controllers.
+--status 401 means unauthorized
+--api s are a way to communicate between frontend and backend
+  so suppose an api "app.use("/api/v1/user",userRoute);" so whenever a request starts with /api/v1/user
+  use userRoute to figure out how to deal with it. so the original api becomes
+  POST /api/v1/user/register something like that. same with login and update.
+  --user 1-recruiter- srinjoyghosh345@gmail.com, password-srinjoy123
+  -- in job model maybe change the experience level to string to better use the 1Y/2Y etc
+  -- understand the query in job.controller
