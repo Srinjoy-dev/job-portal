@@ -42,10 +42,10 @@ const jobSchema = new mongoose.Schema({
         ref:'User',//referencing from user schema because the person creating the job must be an user
         required:true
     },
-    application:{
+    applications:[{//it will have all the applications regarding this job
         type:mongoose.Schema.Types.ObjectId,//relation between job and applications schema
         ref:'Application',//referencing from 
         //required true isnt used here because at the time of creating the job that wont be required
-    }
+    }]
 },{timestamps:true});
 export const Job = mongoose.model("Job",jobSchema);

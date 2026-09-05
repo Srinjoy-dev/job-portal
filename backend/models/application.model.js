@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const applicationSchema = new mongoose.Schema ({//for the job applicants so we need to know stuffs like which company they applied and who applied
     job:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'job',//creating a relation between job and application schema
+        ref:'Job',//creating a relation between job and application schema
         required:true
     },
     applicant:{
