@@ -43,12 +43,15 @@ export const getAllJobs = async(req,res) => {
         const keyword = req.query.keyword || ""; //get the value after api forexample .../?frontend devoloper we need to get this keyword
         //and if that doesnt comes take an empty string
         const query = {
-            $or:[
+            $or:[//or operator means this or that, regex searches for a pattern or text,so its basically checking if the job title or description have that keyword
                 {title:{$regex:keyword, $options:"i"}},//i means case insensitive matching
                  {description:{$regex:keyword, $options:"i"}},
             ]
         };
-        const jobs = await Job.find(query);
+        //job.find(query)means go to the job database and find all the jobs that matches this condition
+        const jobs = await Job.find(query).populate({//we need to populate the company details while job creation so we are populating it from company schema
+            path:"company"
+        }).sort({createdAt:-1});//sort jobs based on createdAt field-put the newest job first-(-1:descending order),(1-ascending order)
         if(!jobs) {
             return res.status(404).json({
                 message:"job not found",
