@@ -1,10 +1,15 @@
 import React, { useState } from "react";
+import axios from "axios";
+
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { toast } from "../ui/toast";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -12,32 +17,39 @@ const Login = () => {
     password: "",
     role: "",
   });
-   const changeEventHandler = (e) => {
+
+  const navigate = useNavigate(); //need navigate to change the current page to home
+  const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
-  
-  const submitHandler = async(e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-   //we dont need to return form same as signup page coz we are not returning file
+    //we dont need to return form same as signup page coz we are not returning file
     //api call
     try {
-        const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-          headers:{
-            "Content-Type":"application/json"
-          },
-          withCredentials:true,
+      const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      //if the request was successful and get a confirmation from backend then send a popup or toast
+      if (res.data.success) {
+        navigate("/"); //send the user to home page if login is successful
+        toast.add({
+          title: res.data.message,
+          type: "success",
         });
-        //if the request was successful and get a confirmation from backend then send a popup or toast
-        if(res.data.success) {
-          navigate("/");//send the user to home page if login is successful
-          toast.success(res.data.message);
-        }
+      }
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
+      toast.add({
+        title: error.response.data.message,
+        type: "error",
+      });
     }
-    
-}
+  };
 
   return (
     <div>

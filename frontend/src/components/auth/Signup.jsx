@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
@@ -17,48 +18,52 @@ const Signup = () => {
     role: "",
     file: "",
   });
-const navigate = useNavigate();
-
+  const navigate = useNavigate();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const changeFileHandler = (e) => {
-    setInput({ ...input, file: e.target.files?.[0] }); //get the 0th index value from the file why?
+    setInput({ ...input, file: e.target.files?.[0] }); //get the 0th index value from the file why?-When the user selects a file, the browser gives you a list of files, even if they selected only one.
   };
 
-const submitHandler = async(e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    //packing every data we got from frontendd into a box so we can send it to backend
+    //packing every data we got from frontend into a box so we can send it to backend
     const formData = new FormData();
-    formData.append("fullname",input.fullName);
-    formData.append("email",input.email);
-    formData.append("phoneNumber",input.phoneNumber);
-    formData.append("password",input.password);
-    formData.append("role",input.role);
-    if(input.file) {
-      formData.append("file",input.file);
+    formData.append("fullname", input.fullName);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("password", input.password);
+    formData.append("role", input.role);
+    if (input.file) {
+      formData.append("file", input.file);
     }
     //api call
     try {
-        const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
-          headers:{
-            "Content-Type":"multipart/form-data"//tells the server that the data includes things like a file
-          },
-          withCredentials:true,//allows things like cookies to be sent along with the request
+      const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", //tells the server that the data includes things like a file
+        },
+        withCredentials: true, //allows things like cookies to be sent along with the request
+      });
+      //if the request was successful and get a confirmation from backend then send a popup or toast
+      if (res.data.success) {
+        navigate("/login"); //send the user to login page if its successful
+        toast.add({
+          title: res.data.message,
+          type: "success",
         });
-        //if the request was successful and get a confirmation from backend then send a popup or toast
-        if(res.data.success) {
-          navigate("/login");//send the user to login page if its successful
-          toast.success(res.data.message);
-        }
+      }
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
+      toast.add({
+        title: error.response.data.message,
+        type: "error",
+      });
     }
-    
-}
+  };
 
   return (
     <div>
@@ -136,11 +141,12 @@ const submitHandler = async(e) => {
             </RadioGroup>
             <div className="flex items-center gap-2">
               <Label>Profile</Label>
-              <Input 
-              accept="image/*" 
-              type="file"
-              onChange={changeFileHandler}
-              className="cursor-pointer" />
+              <Input
+                accept="image/*"
+                type="file"
+                onChange={changeFileHandler}
+                className="cursor-pointer"
+              />
             </div>
           </div>
           <Button type="submit" className="w-full my-4">
