@@ -2,8 +2,12 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import React from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { LogOut, User2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const user = false;
+
   return (
     <div className="bg-white">
       <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
@@ -17,48 +21,71 @@ const Navbar = () => {
 
         {/* right side things */}
         <div className="flex items-center gap-12">
+
           <ul className="flex font-medium items-center gap-5">
             <li>Home</li>
             <li>Jobs</li>
             <li>Browse</li>
           </ul>
 
-          <Popover>
-            <PopoverTrigger render={<Avatar className="cursor-pointer" />}>
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="@shadcn"
-              />
-            </PopoverTrigger>
+          {!user ? (
+            <div className='flex items-center gap-2'>
+              <Link to="/login"><Button variant="outline">Login</Button></Link>
+              <Link to="/signup"><Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">Sign Up</Button></Link>
+            </div>
+          ) : (
+            <Popover>
+              <PopoverTrigger render={<Avatar className="cursor-pointer" />}>
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="@shadcn"
+                />
+              </PopoverTrigger>
 
-            <PopoverContent className="w-80">
-              <div>
-                <div className="flex gap-2 space-y-2">
-                  <Avatar className="cursor-pointer">
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                  </Avatar>
+              <PopoverContent className="w-80">
+                <div>
 
-                  <div>
-                    <h4 className="font-medium">Srinjoy Ghosh</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Lorem ipsum dolor sit amet.
-                    </p>
+                  <div className="flex gap-2 space-y-2">
+                    <Avatar className="cursor-pointer">
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt="@shadcn"
+                      />
+                    </Avatar>
+
+                    <div>
+                      <h4 className="font-medium">Srinjoy Ghosh</h4>
+
+                      <p className="text-sm text-muted-foreground">
+                        Lorem ipsum dolor sit amet.
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* buttons */}
-                <div className="flex flex-col items-start text-gray-600">
-                  <Button variant="link">View Profile</Button>
-                  <Button variant="link">Log Out</Button>
+                  <div className="flex flex-col my-2 text-gray-600">
+
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <User2 />
+                      <Button variant="link">
+                        View Profile
+                      </Button>
+                    </div>
+
+                    <div className="flex w-fit items-center gap-2 cursor-pointer">
+                      <LogOut />
+                      <Button variant="link">
+                        Logout
+                      </Button>
+                    </div>
+
+                  </div>
+
                 </div>
-              </div>
-            </PopoverContent>
-          </Popover>
+              </PopoverContent>
+            </Popover>
+          )}
+
         </div>
-
       </div>
     </div>
   );
