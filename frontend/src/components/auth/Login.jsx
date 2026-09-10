@@ -10,6 +10,10 @@ import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "../ui/toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
+import store from "@/redux/store";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -18,16 +22,20 @@ const Login = () => {
     role: "",
   });
 
-  const navigate = useNavigate(); //need navigate to change the current page to home
+  const {loading} = useSelector(store => store.auth);//useSelector brings the loading value from the path given. the value was changed with dispatch function 
+  const navigate = useNavigate();
+  const dispatch = useDispatch(); //need navigate to change the current page to home
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     //we dont need to return form same as signup page coz we are not returning file
     //api call
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +56,8 @@ const Login = () => {
         title: error.response.data.message,
         type: "error",
       });
+    } finally {//even if one of the block runs try or catch finally will run regardless
+      dispatch(setLoading(false));//the request is finished so stop the loading state
     }
   };
 
@@ -106,9 +116,14 @@ const Login = () => {
               </div>
             </RadioGroup>
           </div>
+          { // rendering conditionally
+          loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 h-4 w-4 animate-spin'/>Please Wait</Button> : 
           <Button type="submit" className="w-full my-4">
             Login
           </Button>
+          //so whenever we click login it will fetch an api request and set loading true and we will 
+          // see the please wait and when api request finishes and set becomes false again we will see login button again
+          }
           <span className="text-sm">
             Don't have an account?{" "}
             <Link to="/signup" className="text-blue-600">

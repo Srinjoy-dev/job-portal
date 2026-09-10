@@ -8,6 +8,8 @@ import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "../ui/toast";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -19,6 +21,8 @@ const Signup = () => {
     file: "",
   });
   const navigate = useNavigate();
+  const {loading} = useSelector(store => store.auth);
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -42,6 +46,7 @@ const Signup = () => {
     }
     //api call
     try {
+       dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_END_POINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data", //tells the server that the data includes things like a file
@@ -62,6 +67,8 @@ const Signup = () => {
         title: error.response.data.message,
         type: "error",
       });
+    } finally{
+      dispatch(setLoading(false));
     }
   };
 
@@ -149,9 +156,14 @@ const Signup = () => {
               />
             </div>
           </div>
+           { // rendering conditionally
+          loading ? <Button className='w-full my-4'> <Loader2 className='mr-2 h-4 w-4 animate-spin'/>Please Wait</Button> : 
           <Button type="submit" className="w-full my-4">
             Signup
           </Button>
+          //so whenever we click login it will fetch an api request and set loading true and we will 
+          // see the please wait and when api request finishes and set becomes false again we will see login button again
+          }
           <span className="text-sm">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-600">

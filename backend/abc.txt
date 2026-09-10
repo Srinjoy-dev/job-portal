@@ -1,3 +1,4 @@
+//our code is not on sonner its so the toast is coming from basic react element so we cant use .success and .error functions
 Express → helps you create your backend/server.
 cookieParser → lets your backend read cookies sent by the browser.
 cors → allows your frontend and backend (running on different ports) to communicate.
@@ -18,3 +19,49 @@ Middleware = something that runs in between the request coming in and your actua
   --user 1-recruiter- srinjoyghosh345@gmail.com, password-srinjoy123
   -- in job model maybe change the experience level to string to better use the 1Y/2Y etc
   -- understand the query in job.controller
+  --axios.post(...) → sends the data
+`${USER_API_END_POINT}/register` → the destination/address
+formData → the signup information being sent
+"multipart/form-data" → tells the server that the data includes things like a file
+withCredentials: true → allows things like cookies to be sent along with the request
+--If withCredentials is false (or you don't include it), the browser won't send cookies with a cross-origin Axios request.
+
+In your project, the important cookie is the JWT authentication cookie.
+
+So:
+
+Login:
+
+Backend gives browser a JWT cookie 🍪
+Browser stores it
+
+Later request with withCredentials: true:
+
+Browser sends that cookie → backend knows which user is logged in
+
+Later request without withCredentials: true:
+
+Cookie isn't sent → backend doesn't receive the JWT
+Authentication middleware can't verify you
+The request will usually be rejected as not authenticated.
+
+So you can think of withCredentials: true as:
+
+"Include my login cookie when talking to the backend."
+--Multer is the thing that receives and processes the file coming from your frontend.
+--Frontend sends FormData → Multer catches the file/form data → backend can access the uploaded file and the other form fields.
+--in signup.jsx- get the 0th index value from the file why?-When the user selects a file, the browser 
+gives you a list of files, even if they selected only one.
+Because the HTML <input type="file"> is designed to allow selecting multiple files by default.
+So the browser uses a FileList:
+files = [file1, file2, file3, ...]
+Even if your user selects only one file, it still gives you a list containing one file
+---Redux is basically a central storage place for data that many different React components need to access.
+
+Without Redux:
+Navbar → has some user data
+Profile → has some user data
+Jobs → needs some user data
+You might have to pass that data around between components, which can get messy.
+Redux is like a shared cupboard in your application. Instead of every component keeping its own copy of 
+important information, they can all go to the same cupboard to get or update it.
