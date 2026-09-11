@@ -65,3 +65,7 @@ Jobs → needs some user data
 You might have to pass that data around between components, which can get messy.
 Redux is like a shared cupboard in your application. Instead of every component keeping its own copy of 
 important information, they can all go to the same cupboard to get or update it.
+--frontend-------------------------------------------------
+--dispatch(setUser(res.data.user));// we were returning user in user controller. now with help of redux
+ it will basically remember this login. can basically set the user true or false from navbar code. but
+ without persistent the user will be null again when we refresh.

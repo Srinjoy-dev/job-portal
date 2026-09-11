@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "../ui/toast";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "@/redux/authSlice";
+import { setLoading, setUser } from "@/redux/authSlice";
 import store from "@/redux/store";
 import { Loader2 } from "lucide-react";
 
@@ -44,6 +44,7 @@ const Login = () => {
       });
       //if the request was successful and get a confirmation from backend then send a popup or toast
       if (res.data.success) {
+        dispatch(setUser(res.data.user));// we were returning user in user controller. now with help of redux it will basically remember this login. can basically set the user true or false from navbar code
         navigate("/"); //send the user to home page if login is successful
         toast.add({
           title: res.data.message,
