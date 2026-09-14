@@ -1,13 +1,26 @@
-import React from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Loader2 } from "lucide-react";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
+  const [loading, setLoading] = useState(false);
+  
   return (
     <div>
-      <Dialog open={open}  onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-106.25" onInteractOutside={()=>setOpen(false)}>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent
+          className="sm:max-w-106.25"
+          onInteractOutside={() => setOpen(false)}
+        >
           <DialogHeader>
             <DialogTitle>Update Profile</DialogTitle>
           </DialogHeader>
@@ -48,9 +61,31 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                 <Label htmlFor="file" className="text-right">
                   Resume
                 </Label>
-                <Input id="file" name="file" type="file" accept="application/pdf" className="col-span-3" />
+                <Input
+                  id="file"
+                  name="file"
+                  type="file"
+                  accept="application/pdf"
+                  className="col-span-3"
+                />
               </div>
             </div>
+            <DialogFooter>
+              {
+                // rendering conditionally
+                loading ? (
+                  <Button className="w-full my-4">
+                    {" "}
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please Wait
+                  </Button>
+                ) : (
+                  <Button type="submit" className="w-full my-4">
+                    Update
+                  </Button>
+                )
+              }
+            </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
