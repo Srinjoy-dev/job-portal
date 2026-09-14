@@ -10,10 +10,21 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-  const [loading, setLoading] = useState(false);
-  
+  const [loading, setLoading] = useState(false);//for loading
+  const {user} = useSelector(store=>store.auth);//for showing filled boxes
+  const [input, setInput] = useState({
+    fullName:user?.fullName,
+    email:user?.email,
+    phoneNumber:user?.phoneNumber,
+    bio:user?.profile?.bio,//bio is inside profile
+    skills:user?.profile?.skills?.map(skill=>skill),//skill is an array
+    file:user?.profile?.resume
+  })
+
+
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>

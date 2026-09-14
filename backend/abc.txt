@@ -78,3 +78,5 @@ Take the value inside the braces and insert it into this string.
 --navigate(`/description/${jobId}`)- so this line means go the jobId which will be different for each user
 and navigate to the description page related to that jobId.
 ///////////////JobDescription.jsx//////////////////- first div mx-auto was malfunctioning so removed it can insert later
+--The ?. is called optional chaining. example- user?.profile?.bio
+“If user exists, access profile. If profile exists, access bio. Otherwise, return undefined instead of causing an error.”
