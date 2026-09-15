@@ -80,3 +80,16 @@ and navigate to the description page related to that jobId.
 ///////////////JobDescription.jsx//////////////////- first div mx-auto was malfunctioning so removed it can insert later
 --The ?. is called optional chaining. example- user?.profile?.bio
 “If user exists, access profile. If profile exists, access bio. Otherwise, return undefined instead of causing an error.”
+--setInput({
+  ...input,
+  [e.target.name]: e.target.value
+});
+
+Briefly:
+
+...input → keeps all existing form values.
+e.target.name → identifies which field changed, like "email".
+e.target.value → gets the new value typed by the user.
+[e.target.name] → dynamically updates that specific field.
+
+Example: If the email input changes, only input.email gets updated; the other fields stay unchanged.
