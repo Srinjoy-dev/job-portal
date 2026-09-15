@@ -16,13 +16,13 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   const [loading, setLoading] = useState(false);//for loading
   const {user} = useSelector(store=>store.auth);//for showing filled boxes
   const [input, setInput] = useState({
-    fullName:user?.fullName,
+    fullName:user?.fullname,
     email:user?.email,
     phoneNumber:user?.phoneNumber,
     bio:user?.profile?.bio,//bio is inside profile
     skills:user?.profile?.skills?.map(skill=>skill),//skill is an array
     file:user?.profile?.resume
-  })
+  });
 
 
   return (
@@ -42,31 +42,31 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
                   Name
                 </Label>
                 {/*htmlFor="name" → tells the label which input it belongs to.id="name" → identifies that input.*/}
-                <Input id="name" name="name" className="col-span-3" />
+                <Input id="name" name="name" value={input.fullName} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="email" className="text-right">
                   Email
                 </Label>
-                <Input id="email" name="email" className="col-span-3" />
+                <Input id="email" name="email" value={input.email} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="number" className="text-right">
                   Number
                 </Label>
-                <Input id="number" name="number" className="col-span-3" />
+                <Input id="number" name="number" value={input.phoneNumber} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="bio" className="text-right">
                   Bio
                 </Label>
-                <Input id="bio" name="bio" className="col-span-3" />
+                <Input id="bio" name="bio" value={input.bio} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="skills" className="text-right">
                   Skills
                 </Label>
-                <Input id="skills" name="skills" className="col-span-3" />
+                <Input id="skills" name="skills" value={input.skills} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <Label htmlFor="file" className="text-right">
