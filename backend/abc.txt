@@ -84,7 +84,6 @@ and navigate to the description page related to that jobId.
   ...input,
   [e.target.name]: e.target.value
 });
-
 Briefly:
 
 ...input → keeps all existing form values.
@@ -93,3 +92,15 @@ e.target.value → gets the new value typed by the user.
 [e.target.name] → dynamically updates that specific field.
 
 Example: If the email input changes, only input.email gets updated; the other fields stay unchanged.
+//////////////the flow //////////////
+User selects resume
+        ↓
+Multer → keeps it temporarily in memory
+        ↓
+Data URI → prepares the file
+        ↓
+Cloudinary → stores the resume online
+        ↓
+Cloudinary gives you a URL
+        ↓
+Save that URL in MongoDB
