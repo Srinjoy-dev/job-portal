@@ -129,7 +129,7 @@ export const updateProfile = async(req,res) => {
         //change the skills strings into array
        let skillsArray;
        if(skills) {//using this if because skills was not there at first.
-         const skillsArray=skills.split(",");
+         skillsArray=skills.split(",");
        }
         //if they want to update profile they must be authenticated/logged in
         const userId = req.id;//middleware authentication,it came from jwt token
@@ -144,7 +144,7 @@ export const updateProfile = async(req,res) => {
         if(fullname)  user.fullname = fullname;
         if(email)  user.email = email;
         if(phoneNumber)  user.phoneNumber = phoneNumber;
-        if(bio) user.bio = bio;
+        if(bio) user.profile.bio = bio;
         if(skills)  user.profile.skills = skillsArray;
 
         //resume comes later here.... 
@@ -160,7 +160,7 @@ export const updateProfile = async(req,res) => {
         profile:user.profile
        }
        return res.status(200).json({
-        message:"Profile updatedd successfully",
+        message:"Profile updated successfully",
         user,
         success:true
        })

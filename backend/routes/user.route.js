@@ -10,7 +10,7 @@ const router = express.Router();//we get router in express
 //profile we need to have middlewares.
 router.route("/register").post(singleUpload,register);
 router.route("/login").post(login);
-router.route("/profile/update").post(isAuthenticated,updateProfile);//it will only comes to this function
+router.route("/profile/update").post(isAuthenticated,singleUpload,updateProfile);//it will only comes to this function
 //if middleware is verified 
 router.route("/logout").get(logout);//its get request coz we are not posting any data
 

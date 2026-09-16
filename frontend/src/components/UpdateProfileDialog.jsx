@@ -10,19 +10,26 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@/redux/authSlice";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { toast } from "./ui/toast";
+import axios from "axios";
 
 const UpdateProfileDialog = ({ open, setOpen }) => {
-  const [loading, setLoading] = useState(false); //for loading
-  const { user } = useSelector((store) => store.auth); //for showing filled boxes
+  const [loading, setLoading] = useState(false);
+  const { user } = useSelector((store) => store.auth);
   const [input, setInput] = useState({
-    fullName: user?.fullname,
-    email: user?.email,
-    phoneNumber: user?.phoneNumber,
-    bio: user?.profile?.bio, //bio is inside profile
-    skills: user?.profile?.skills?.map((skill) => skill), //skill is an array
-    file: user?.profile?.resume,
+    fullName: user?.fullname || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    bio: user?.profile?.bio || "",
+    skills: user?.profile?.skills?.map((skill) => skill) || [],
+    file: user?.profile?.resume || "",
   });
+
+  //need this update new userdata in redux
+  const dispatch = useDispatch();
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -33,9 +40,9 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
     setInput({...input, file})//only change the file
   }
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();//stops the forms default behaviour like refreshing the page
-    const formData = new FormData();
+    const formData = new FormData();//packages normal form values and files together so they can be sent to the backend.
     formData.append("fullname", input.fullName);
     formData.append("email", input.email);
     formData.append("phoneNumber", input.phoneNumber);
@@ -45,11 +52,25 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         formData.append("file", input.file)//append only if file is properly uploaded
     }
     try {
-        
+        const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {//this req updates the user profile
+            headers:{
+                'Content-Type':'multipart/form-data'//a way to send data to the backend when the request contains both normal fields and files.
+            },
+            withCredentials:true
+        });
+        if(res.data.success) { //checks whether the backend says the update was successful.
+            dispatch(setUser(res.data.user));//updates the redux data
+            toast.add({
+  title: res.data.message,
+  type: "success",
+});
+        }
     } catch (error) {
-        
-    }
-
+  console.log("ERROR:", error);
+  console.log("RESPONSE:", error.response);
+  console.log("DATA:", error.response?.data);
+}
+    setOpen(false);
     console.log(input);//prints the current form data
   };
   
