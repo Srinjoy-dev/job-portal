@@ -52,6 +52,9 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         formData.append("file", input.file)//append only if file is properly uploaded
     }
     try {
+      //add a loading block while the data updates
+      setLoading(true);
+
         const res = await axios.post(`${USER_API_END_POINT}/profile/update`, formData, {//this req updates the user profile
             headers:{
                 'Content-Type':'multipart/form-data'//a way to send data to the backend when the request contains both normal fields and files.
@@ -64,6 +67,8 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   title: res.data.message,
   type: "success",
 });
+        } finally {
+          setLoading(false);
         }
     } catch (error) {
   console.log("ERROR:", error);
