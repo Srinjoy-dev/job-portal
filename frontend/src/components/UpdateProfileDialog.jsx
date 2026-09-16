@@ -67,14 +67,15 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
   title: res.data.message,
   type: "success",
 });
-        } finally {
-          setLoading(false);
         }
-    } catch (error) {
+    }  
+     catch (error) {
   console.log("ERROR:", error);
   console.log("RESPONSE:", error.response);
   console.log("DATA:", error.response?.data);
-}
+}    finally {
+          setLoading(false);
+        }
     setOpen(false);
     console.log(input);//prints the current form data
   };
