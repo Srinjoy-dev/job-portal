@@ -194,3 +194,4 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 };
 
 export default UpdateProfileDialog;
+//made the profile update dynamic and fixed some bugs
