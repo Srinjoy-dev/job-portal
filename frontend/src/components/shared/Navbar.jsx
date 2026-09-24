@@ -3,11 +3,38 @@ import React from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { LogOut, User2 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "../ui/toast";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { setUser } from "@/redux/authSlice";
+import axios from "axios";
 
 const Navbar = () => {
   const {user} = useSelector(store=>store.auth)//destructuring user from store auth
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logoutHandler = async() => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`,{withCredentials:true});
+      if(res.data.success) {
+        dispatch(setUser(null));//whenever we logout user will be null
+        navigate("/");//navigate to home page
+        toast.add({
+          title: res.data.message,
+          type: "success"
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.add({
+         title: error.response?.data?.message || "Something went wrong",
+         type: "error",
+});
+      
+    }
+  }
 
   return (
     <div className="bg-white">
@@ -74,7 +101,7 @@ const Navbar = () => {
 
                     <div className="flex w-fit items-center gap-2 cursor-pointer">
                       <LogOut />
-                      <Button variant="link">
+                      <Button onClick={logoutHandler}variant="link">
                         Logout
                       </Button>
                     </div>
